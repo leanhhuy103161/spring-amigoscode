@@ -1,5 +1,7 @@
 package com.amigoscode.basicspring.student;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
@@ -94,4 +96,5 @@ public class Student {
                 ", age=" + age +
                 '}';
     }
+
 }
