@@ -11,7 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @AllArgsConstructor
@@ -35,7 +39,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .formLogin();
     }
 
-//    @Override
+    @Override
+    @Bean
+    protected UserDetailsService userDetailsService() {
+        UserDetails jossUser = User.builder()
+                .username("joss")
+                .password("josstice")
+                .roles("STUDENT") // ROLE_STUDENT
+                .build();
+
+        return new InMemoryUserDetailsManager(
+                jossUser
+        );
+    }
+
+    //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.authenticationProvider(daoAuthenticationProvider());
 //    }
