@@ -15,16 +15,18 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
-@AllArgsConstructor
+@AllArgsConstructor // notice
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //    private final AppUserService appUserService;
 //    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -44,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected UserDetailsService userDetailsService() {
         UserDetails jossUser = User.builder()
                 .username("joss")
-                .password("josstice")
+                .password(passwordEncoder.encode("josstice"))
                 .roles("STUDENT") // ROLE_STUDENT
                 .build();
 
