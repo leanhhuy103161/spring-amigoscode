@@ -66,4 +66,12 @@ public class StudentService {
 
 //        studentRepository.save(student1);
     }
+
+    public Student getStudent(Long id) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException(
+                        "student with id:" + id + " does not exists"
+                ));
+        return student;
+    }
 }

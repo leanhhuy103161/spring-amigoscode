@@ -1,6 +1,7 @@
 package com.amigoscode.basicspring.security.config;
 
 //import com.amigoscode.basicspring.appuser.AppUserService;
+import com.amigoscode.basicspring.security.ApplicationUserRole;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,6 +19,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static com.amigoscode.basicspring.security.ApplicationUserRole.ADMIN;
+import static com.amigoscode.basicspring.security.ApplicationUserRole.STUDENT;
+
 @Configuration
 @AllArgsConstructor // notice
 @EnableWebSecurity
@@ -33,8 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
 //                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v*/registration/**", "/", "/css/*", "index", "js/*")
-                .permitAll()
+                .antMatchers("/api/v*/registration/**", "/", "/css/*", "index", "/js/*").permitAll()
+                .antMatchers("/api/**").hasRole(STUDENT.name())
                 .anyRequest()
                 .authenticated().and()
                 .httpBasic();
@@ -47,11 +51,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails jossUser = User.builder()
                 .username("joss")
                 .password(passwordEncoder.encode("josstice"))
-                .roles("STUDENT") // ROLE_STUDENT
+                .roles(STUDENT.name()) // ROLE_STUDENT
+                .build();
+
+        UserDetails alexUser = User.builder()
+                .username("alex")
+                .password(passwordEncoder.encode("alexa"))
+                .roles(ADMIN.name()) // ROLE_ADMIN
                 .build();
 
         return new InMemoryUserDetailsManager(
-                jossUser
+                jossUser,
+                alexUser
         );
     }
 
