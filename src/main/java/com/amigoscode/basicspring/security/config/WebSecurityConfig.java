@@ -19,8 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import static com.amigoscode.basicspring.security.ApplicationUserRole.ADMIN;
-import static com.amigoscode.basicspring.security.ApplicationUserRole.STUDENT;
+import static com.amigoscode.basicspring.security.ApplicationUserRole.*;
 
 @Configuration
 @AllArgsConstructor // notice
@@ -60,9 +59,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles(ADMIN.name()) // ROLE_ADMIN
                 .build();
 
+        UserDetails marianUser = User.builder()
+                .username("marian")
+                .password(passwordEncoder.encode("marian"))
+                .roles(ADMINTRAINEE.name()) // ROLE_ADMINTRAINEE
+                .build();
+
         return new InMemoryUserDetailsManager(
                 jossUser,
-                alexUser
+                alexUser,
+                marianUser
         );
     }
 
